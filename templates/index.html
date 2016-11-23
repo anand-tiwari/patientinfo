@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% verbatim %}
+<!-- <img class="home-back-img" src="/static/img/hosp.png"> -->
+<div>
+	<h1 class="heading"> Welcome to Park Hospital </h1>
+	<div class="homepage">
+		<button class="custom_button btn btn-default" data-toggle="modal" data-target="#entryform">
+			Entry Form
+		</button>
+		<button class="custom_button btn btn-default" data-toggle="modal" data-target="#list_of_patient"
+		ng-click="displyPatient()">
+			List Of Patient
+		</button>
+	</div>
+</div>
+
+<!-- Display list of all Patients -->
+<div id="list_of_patient" class="modal fade" role="dialog" ng-init="displyPatient()">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Patient List</h4>
+        <label> Search : 
+        	<input type="text" ng-model="search" class="search-box" />
+        </label>
+        <button class="entry_button btn btn-default" data-toggle="modal" data-target="#entryform">
+			Entry Form
+		</button>
+      </div>
+      <div class="modal-body">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>first name</th>
+					<th>last name</th>
+					<th>phone</th>
+					<th>email</th>
+					<th>age</th>
+					<th>Date of Birth</th>
+					<th>gender</th>
+					<th>Comment</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in patientLits | filter:search | filter:paginate">
+					<td>{{row.fields.first_name}}</td>
+					<td>{{row.fields.last_name}}</td>
+					<td>{{row.fields.phone}}</td>
+					<td>{{row.fields.email}}</td>
+					<td>{{row.fields.age}}</td>
+					<td>{{row.fields.dob | date: 'dd/MM/yyyy'}}</td>
+					<td>{{row.fields.gender}}</td>
+					<td>{{row.fields.comment}}</td>
+					<td>
+						<button type="button" ng-click="removeItem(row.pk)" class="btn btn-sm btn-danger">
+							<i class="glyphicon glyphicon-remove-circle"></i>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<pagination total-items="totalItems" ng-model="currentPage"  
+             max-size="5" boundary-links="true"  
+             items-per-page="numPerPage" class="pagination-sm">  
+       </pagination>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- end of display list -->
+
+<!-- Patient form start -->
+<div id="entryform" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Patient Information</h4>
+      </div>
+      <div class="modal-body">
+		<div class="col-sm-11 row">
+		    <!-- FORM -->
+		    <!-- pass in the variable if our form is valid or invalid -->
+		    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate > 
+		    	<!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+		        <!-- FIRSTNAME -->
+		        
+	        	<div class="form-group col-sm-6">
+		            <label>First Name</label>
+		            <input type="text" name="first_name" class="form-control" ng-model="patient.first_name" 
+		            ng-minlength="3" ng-maxlength="8" ng-required="true">
+		            <p ng-show="userForm.first_name.$error.minlength" class="help-block">
+		            	Firstname is too short.</p>
+  					<p ng-show="userForm.first_name.$error.maxlength" class="help-block">
+  					Firstname is too long.</p>
+	        	</div>
+
+		        <!-- LASTNAME -->
+		        <div class="form-group col-sm-6">
+		            <label>Last Name</label>
+		            <input type="text" name="last_name" class="form-control" ng-model="patient.last_name" 
+		            ng-minlength="3" ng-maxlength="8" ng-required="true">
+		            <p ng-show="userForm.last_name.$error.minlength" class="help-block">Lastname is too short.
+		            </p>
+					<p ng-show="userForm.last_name.$error.maxlength" class="help-block">Lastname is too long.</p>
+		        </div>
+	        
+
+		        <!-- AGE -->
+		        <div class="form-group col-sm-6">
+		            <label>Age</label>
+		            <input type="number" name="age" class="form-control" ng-min="0" ng-model="patient.age" required>
+		            <p ng-show="userForm.age.$invalid && !userForm.age.$pristine" class="help-block">age is required</p>
+		            <p ng-show="userForm.age.$error.min" class="help-block">age always be positive</p>
+		        </div>
+		        
+		        <!-- Phone Number -->
+		        <div class="form-group col-sm-6">
+		            <label>Phone Number</label>
+		            <input type="text" class="form-control" ng-minlength="10" ng-maxlength="10" name="phone" 
+		            placeholder="Phone" ng-model="patient.phone" ng-required="true">
+		            <p ng-show="userForm.phone.$error.minlength" class="help-block">Phone number not less that 10 char</p>
+  					<p ng-show="userForm.phone.$error.maxlength" class="help-block">Phone number not more than 10 char</p>
+		        </div>
+
+		      	<!-- Date of Birth -->
+		        <div class="form-group col-sm-6">
+		            <label>Date of Birth</label>
+		            <input type="date" class="form-control" ng-data-modal="value" max="{{date | date:'yyyy-MM-dd'}}" name="dob"
+		            placeholder="Date of Birth" ng-model="dob">
+  					<p ng-show="userForm.dob.$error.max" class="help-block">Date of Birth is less than todays</p>
+		        </div>
+		       
+		        <!-- EMAIL -->
+		        <div class="form-group col-sm-6">
+		            <label>Email</label>
+		            <input type="email" name="email" class="form-control" ng-model="patient.email">
+		            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email</p>
+		        </div>
+		        <!-- Gender  -->
+		        <div class="form-group col-sm-6">
+		        	<label>Gender </label>
+    				<select ng-model="patient.gender" ng-options="g.type for g in genderList" style="width:100%;height:30px;">
+    				</select>
+		        </div>
+		        
+		        <!-- Text Information -->
+		        <div class="form-group col-sm-6">
+      				<label for="comment">Text Information </label>
+      				<textarea ng-model="patient.comment" class="form-control" rows="3"></textarea>
+    			</div>
+
+		        <!-- SUBMIT BUTTON -->
+		        <button type="submit" class="btn btn-primary form-sumbit-button" ng-disabled="userForm.$invalid">Submit</button>
+		    </form>
+
+		</div><!-- col-sm-11 -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--  end of Patient form -->
+{% endverbatim %}
+{% endblock %}
