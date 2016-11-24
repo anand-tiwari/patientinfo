@@ -1,16 +1,27 @@
 /* for common css*/
 .custom_button{
-    width: 170px;
-    height: 40px;
+    width: 210px;
+    height: 48px;
     border-radius: 0px;
-    font-size: 18px;
+    font-size: 26px;
+    font-style: italic !important;
+    font-family: -webkit-pictograph !important;
+    border-color: #71E5E8 !important;
+    background: #FF4581 !important;
+    font-weight: 900;
+    color: white;
 }
+
+button.custom_button:hover {
+    background: #33BFBC !important;
+}
+
 .navbar { border-radius:0 !important;}
 
 .homepage{
 	position: absolute;
 	top: 50%;
-	left: 40%;
+	left: 35%;
 	z-index: 2;
 }
 .row{
@@ -35,7 +46,10 @@ body{
 .form-sumbit-button{
 	margin-left: 15px;
 }
-
+.help-block{
+	color: red;
+	font-family: initial;
+}
 
 /* for model-box css*/
 .search-box{
@@ -46,6 +60,15 @@ body{
 .entry_button{
 	width: 161px;
     height: 32px;
+    background: #E878B7;
+    color: whitesmoke;
+    font-weight: 900;
+    font-size: 16px;
+    font-family: initial;
+}
+.entry_button:hover{
+	background: #E878B7 !important;
+    color: whitesmoke;
 }
 
 #list_of_patient > .modal-dialog {
@@ -65,16 +88,6 @@ body{
 }
 
 .modal-footer{
-	border-top: 0px !important;
-}
-
-
-/* for nav-bar css*/
-.form-area{
-	background-color: cadetblue;
-}
-
-.showTable{
-	background: whitesmoke !important;
-    padding: 0px 8px !important;
+	padding: 8px 15px;
+	margin-top: 0px;
 }

@@ -10,18 +10,6 @@ def home(request):
 	template = 'index.html'
 	return render(request, template,{})
 
-#  Navigate to form page 
-def patientform(request):
-	context = ""
-	template = 'add.html'
-	return render(request, template, {})
-
-# Navigate to the Display page
-def displayPage(request):
-	template = 'show.html'
-	return render(request, template, {})
-
-
 # Add patient to the database 
 def addpatient(request):
 	template = 'add.html'
