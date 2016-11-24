@@ -137,7 +137,7 @@
 		        <div class="form-group col-sm-6">
 		            <label>Date of Birth</label>
 		            <input type="date" class="form-control" ng-data-modal="value" max="{{date | date:'yyyy-MM-dd'}}" name="dob"
-		            placeholder="Date of Birth" ng-model="dob">
+		            placeholder="Date of Birth" ng-model="patient.dob">
   					<p ng-show="userForm.dob.$error.max" class="help-block">Date of Birth is less than todays</p>
 		        </div>
 		       
