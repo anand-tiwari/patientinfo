@@ -129,7 +129,7 @@
 		            placeholder="Phone" ng-model="patient.phone" ng-required="true" 
 		            ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/">
 		            <p ng-show="userForm.phone.$error.pattern" class="help-block">Only digits are allowed</p>
-		            <p ng-show="userForm.phone.$valid && !userForm.phone.$pristine" class="help-block">
+		            <p ng-show="userForm.phone.$error.maxlength" class="help-block">
 		            	Must be 10 digits
 		            </p>
 		        </div>
